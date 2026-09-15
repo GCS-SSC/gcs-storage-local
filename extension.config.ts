@@ -2,7 +2,7 @@ import { defineGcsExtension } from '@gcs-ssc/extensions'
 
 export default defineGcsExtension({
   key: 'gcs-storage-local',
-  sdkVersion: '^0.2.1',
+  sdkVersion: '^0.3.0',
   requiredHostCapabilities: ['file-storage-provider'],
   name: {
     en: 'Local file storage',

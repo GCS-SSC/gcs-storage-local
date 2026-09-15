@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@gcs-ssc/extensions": "^0.2.1",
+    "@gcs-ssc/extensions": "^0.3.0",
     "nanoid": "^5.1.6"
   },
   "devDependencies": {

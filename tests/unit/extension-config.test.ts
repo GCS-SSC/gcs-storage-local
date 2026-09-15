@@ -4,7 +4,7 @@ import extension from '../../extension.config'
 describe('local storage extension manifest', () => {
   it('declares only the host storage-provider capability', () => {
     expect(extension.key).toBe('gcs-storage-local')
-    expect(extension.sdkVersion).toBe('^0.2.1')
+    expect(extension.sdkVersion).toBe('^0.3.0')
     expect(extension.requiredHostCapabilities).toEqual(['file-storage-provider'])
   })
 
