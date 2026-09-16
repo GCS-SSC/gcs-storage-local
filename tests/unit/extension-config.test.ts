@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest'
 import extension from '../../extension.config'
 
 describe('local storage extension manifest', () => {
-  it('declares only the host storage-provider capability', () => {
+  it('declares storage and explicit audit ownership capabilities', () => {
     expect(extension.key).toBe('gcs-storage-local')
-    expect(extension.sdkVersion).toBe('^0.3.0')
-    expect(extension.requiredHostCapabilities).toEqual(['file-storage-provider'])
+    expect(extension.sdkVersion).toBe('^0.3.2')
+    expect(extension.requiredHostCapabilities).toEqual(['audit-ownership', 'file-storage-provider'])
   })
 
   it('contributes one adapter without configuration UI or custom metadata', () => {

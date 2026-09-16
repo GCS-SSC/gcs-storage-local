@@ -1,9 +1,11 @@
-import { defineGcsExtension } from '@gcs-ssc/extensions'
+import { defineGcsExtension, defineGcsAuditOwnership } from '@gcs-ssc/extensions'
 
 export default defineGcsExtension({
+  // Host-managed configuration, KV and secrets keep their host ownership rules.
+  auditOwnership: defineGcsAuditOwnership([]),
   key: 'gcs-storage-local',
-  sdkVersion: '^0.3.0',
-  requiredHostCapabilities: ['file-storage-provider'],
+  sdkVersion: '^0.3.2',
+  requiredHostCapabilities: ['audit-ownership', 'file-storage-provider'],
   name: {
     en: 'Local file storage',
     fr: 'Stockage local de fichiers'

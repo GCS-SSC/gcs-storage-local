@@ -6,10 +6,11 @@
   "scripts": {
     "test:unit": "vitest run --config vitest.config.ts",
     "test:coverage": "vitest run --coverage --config vitest.config.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:audit": "vitest run --config vitest.audit.config.ts"
   },
   "dependencies": {
-    "@gcs-ssc/extensions": "^0.3.0",
+    "@gcs-ssc/extensions": "^0.3.2",
     "nanoid": "^5.1.6"
   },
   "devDependencies": {
