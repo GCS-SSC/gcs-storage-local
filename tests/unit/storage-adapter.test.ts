@@ -75,6 +75,33 @@ describe('local file storage provider adapter', () => {
     await expect(adapter.deleteObject(operationContext())).resolves.toBeUndefined()
   })
 
+  it.skipIf(process.getuid === undefined)('retries a failed object and safely replays a partially deleted batch', async () => {
+    const root = await createRoot()
+    const objectIds = ['01JFIRSTOBJECT', '01JRETRYOBJECT', '01JLASTOBJECT']
+    for (const objectId of objectIds) await adapter.writeObject(writeInput(objectId))
+    const retryPath = join(root, 'gcs-storage-local', '01JRETRYOBJECT')
+    await chmod(retryPath, 0o644)
+
+    await adapter.deleteObject(operationContext('01JFIRSTOBJECT'))
+    await expect(adapter.deleteObject(operationContext('01JRETRYOBJECT')))
+      .rejects.toThrow('Unsafe local storage file permissions')
+    await adapter.deleteObject(operationContext('01JLASTOBJECT'))
+
+    await expect(access(join(root, 'gcs-storage-local', '01JFIRSTOBJECT')))
+      .rejects.toMatchObject({ code: 'ENOENT' })
+    await expect(readFile(retryPath, 'utf8')).resolves.toBe('private object')
+    await expect(access(join(root, 'gcs-storage-local', '01JLASTOBJECT')))
+      .rejects.toMatchObject({ code: 'ENOENT' })
+
+    await chmod(retryPath, 0o600)
+    await adapter.deleteObject(operationContext('01JRETRYOBJECT'))
+    for (const objectId of objectIds) {
+      await expect(adapter.deleteObject(operationContext(objectId))).resolves.toBeUndefined()
+      await expect(access(join(root, 'gcs-storage-local', objectId)))
+        .rejects.toMatchObject({ code: 'ENOENT' })
+    }
+  })
+
   it('rejects malformed or identity-mismatched locators', async () => {
     await createRoot()
     await expect(adapter.readObject({
